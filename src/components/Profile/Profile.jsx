@@ -1,9 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Typography, Button, Box } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { ExitToApp } from '@mui/icons-material';
+
+import { userSelector } from '../../feature/auth';
 
 const Profile = () => {
-  console.log('Profile');
+  const { user } = useSelector(userSelector);
+  const favouriteMovies = [];
 
-  return <div>Profile</div>;
+  const logOut = () => {
+    localStorage.clear();
+    window.location.href = '/';
+  };
+
+  return (
+    <Box>
+      <Box display="flex" justifyContent="space-between">
+        <Typography varient="h4" gutterBottom>
+          My Profile
+        </Typography>
+        <Button color="inherit" onClick={logOut}>
+          Logout &nbsp; <ExitToApp />
+        </Button>
+      </Box>
+      {!favouriteMovies.length ? (
+        <Typography varient="h5">
+          Add favourites or watchlist some movies to see them here!
+        </Typography>
+      ) : (
+        <Box>Favourite Movies</Box>
+      )}
+    </Box>
+  );
 };
 
 export default Profile;
