@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   Typography,
@@ -25,10 +25,12 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { useGetRecommendationsQuery } from '../../services/TMDB';
+import {
+  useGetRecommendationsQuery,
+  useGetMovieQuery,
+} from '../../services/TMDB';
 import { selectGenreOrCategory } from '../../feature/currentGenreOrCategory';
 import useStyles from './styles';
-import { useGetMovieQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres';
 import { MovieList } from '../index';
 
@@ -37,6 +39,7 @@ const MovieInformation = () => {
   const { data, isFetching, error } = useGetMovieQuery(id);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
 
   const { data: recommendations, isFetching: isRecommendationsFetching } =
     useGetRecommendationsQuery({
@@ -185,7 +188,11 @@ const MovieInformation = () => {
                 >
                   IMDB
                 </Button>
-                <Button onClick={() => {}} href="#" end={<Theaters />}>
+                <Button
+                  onClick={() => setOpen(true)}
+                  href="#"
+                  end={<Theaters />}
+                >
                   Trailer
                 </Button>
               </ButtonGroup>
@@ -235,6 +242,23 @@ const MovieInformation = () => {
           <Box>Sorry, nothing was found.</Box>
         )}
       </Box>
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        {data?.videos?.results?.length > 0 && (
+          <iframe
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+            allow="autoplay"
+          />
+        )}
+      </Modal>
     </Grid>
   );
 };
