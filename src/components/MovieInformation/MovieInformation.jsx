@@ -15,11 +15,10 @@ import {
   Theaters,
   Language,
   PlusOne,
-  favorite,
+  Favorite,
   FavoriteBorderOutlined,
   Remove,
   ArrowBack,
-  Favorite,
 } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -104,7 +103,7 @@ const MovieInformation = () => {
               : ''}
           </Typography>
         </Grid>
-        <Grid items className={classes.genresContainer}>
+        <Grid item className={classes.genresContainer}>
           {data?.genres?.map((genre) => (
             <Link
               key={genre.name}
